@@ -1,27 +1,23 @@
 <script setup lang="ts">
-import { ref, watch, reactive, onMounted  } from "vue";
+import { ref, watch, reactive, onMounted, computed  } from "vue";
 import type { User } from "@/interface/user";
 import CardStyle from "./CardStyle.vue";
 import CardUser from "./CardUser.vue";
 import Input from "./input/Input.vue"
-
+import Button from "./button/Button.vue"
 const props = withDefaults(
   defineProps<{
     users: User[]
     user : User
-    text?: string;
   }>(),
-  {
-    text: ''
-  }
+  {}
 );
 
-// const text = ref<string>('');
-const userlist = ref<string[]>([])
+const userlist = ref<User[]>([])
+const text = ref('')
 
 
-
-function findInArr(array: string, keyword: string) {
+function findInArr(array: string[], keyword: string) {
   for (let i = 0; i < array.length; i++) {
     const item = array[i];
     if (item.startsWith(keyword)) {
@@ -31,39 +27,49 @@ function findInArr(array: string, keyword: string) {
   return false;
 }
 
-const search = () => {
-  return props.users.filter(
-    (item) =>
-      findInArr(item.phones, props.text) ||
-      item.name.toLowerCase().includes(props.text.toLowerCase()) ||
-      item.email.toLowerCase().includes(props.text.toLowerCase())
-  );
-};
+
+  const search = () => {
+    return props.users.filter(
+      (item) =>
+        findInArr(item.phones, text.value) ||
+        item.name.toLowerCase().includes(text.value.toLowerCase()) ||
+        item.email.toLowerCase().includes(text.value.toLowerCase())
+    );
+  };
+
 
 watch(
-  () => props.text,
+  () => text.value,
   () => {
+    console.log(userlist.value)
     userlist.value = search();
-  },
-  { immediate: true }
+    
+  },{
+    immediate : true
+  }
 );
 
 
 onMounted(() => {
-  search();
-})
+  console.log("onmountes")
+  search()
+  console.log("search")
+});
+
 </script>
 
 <template>
   <div>
   
   <CardStyle class="container con1">
-    <Input> </Input>
+    
+  <Input v-model="text" />
+  <Button @click="search" v-model="text"></Button>
     <h3 class="result">
       Result <span class="text_gray">({{ userlist.length }})</span>
     </h3>
 
-    <div class="row">
+    <div class="row gap-4">
       <CardUser
         :user="user"
         v-for="user in userlist"
@@ -77,7 +83,7 @@ onMounted(() => {
 </div>
 </template>
 
-<style>
+<style scoped>
 .con1 {
   position: absolute;
   width: 1096px;
@@ -90,14 +96,7 @@ onMounted(() => {
   padding: 24px !important;
 }
 
-.s_bt {
-  margin-left: 12px;
-  padding: 2px 12px;
-  width: 110px;
 
-  background: #5119f0 !important;
-  border-radius: 4px !important;
-}
 
 .s_bt:hover {
   background-color: rgb(135, 108, 230) !important;
@@ -121,35 +120,12 @@ onMounted(() => {
 
 .user-table {
   width: 22% !important;
-  height: 88px;
+ height: 88px !important;
 
-  line-height: 10px !important;
+  line-height: 5px !important;
 }
 
-.name {
-  font-weight: bold;
-  font-size: 14px;
-}
 
-.phone {
-  font-size: 12px;
-  color: rgb(140, 145, 150);
-}
 
-.email {
-  font-size: 12px;
-  color: rgb(140, 145, 150);
-  width: 200px;
-}
-
-.tiny {
-  border-radius: 2px;
-  justify-content: center;
-  align-items: center;
-  padding: 0px 4px 1px;
-  background: #efedff;
-  border-radius: 4px;
-  color: #5119f0;
-}
 
 </style>

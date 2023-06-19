@@ -5,7 +5,6 @@ import type { User} from "@/interface/user"
 const props = withDefaults(defineProps<{
   user : User
 }>(),{
-    
 }) 
 
 </script>
@@ -14,7 +13,7 @@ const props = withDefaults(defineProps<{
 <CardStyle class="card-user">
     <p class="name">{{ user.name }}</p>
     <p class="phone">
-      Phone: {{ user.phones }}
+      Phone: {{ user.phones[0] }}
       <span  alt="plsplspls" class="border tiny" v-if="user.phones.length > 1">
         +{{ user.phones.length - 1 }}</span
       >
@@ -24,6 +23,31 @@ const props = withDefaults(defineProps<{
 
 </template >
 
-<style >
+<style scoped>
+.name {
+  font-weight: bold;
+  font-size: 12px;
+}
 
+.phone {
+  font-size: 12px;
+  color: rgb(140, 145, 150);
+}
+
+.email {
+  font-size: 12px;
+  color: rgb(140, 145, 150);
+  width: 200px;
+}
+
+.tiny {
+  border-radius: 2px;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 4px 1px;
+  background: #efedff;
+  border-radius: 4px;
+  color: #5119f0;
+}
+  
 </style>
