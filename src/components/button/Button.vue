@@ -1,16 +1,27 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue";
 
-
-const text = reactive({ word: "" });
 
 </script>
 <template>
-  <input v-model="text" type="text" placeholder="Search"     />
+  <button class="bt_blue">search</button>
 </template>
 
 <style scoped>
-.read-the-docs {
-  color: #888;
+.bt_blue {
+  margin-left: 12px;
+  padding: 3px 12px;
+  width: 110px;
+  color: white;
+  border: transparent ;
+  background: #5119F0 !important;
+  border-radius: 4px !important;
+  transition-duration: 0.4s;
+}
+
+
+.bt_blue:hover {
+  background-color: #ffffff !important; 
+  color: #5119F0 !important;
+  border:solid #5119F0 !important;
 }
 </style>
