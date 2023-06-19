@@ -1,17 +1,18 @@
-<script setup lang="ts">
-import { ref, reactive } from "vue";
+<script lang="ts" setup>
+// const props = defineProps(['modelValue'])
+const props = defineProps<{
+  modelValue: string
+  // bar?: number
+}>()
 
-
-// const text = reactive({ word: "" });
-const text = "";
-
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string): void
+}>()
 </script>
-<template>
-  <input v-model="text" type="text" placeholder="Search"     />
-</template>
 
-<style scoped>
-.read-the-docs {
-  color: #888;
-}
-</style>
+<template>
+  <input
+    :value="modelValue"
+    @input="$emit('update:modelValue', $event.target.value)"
+  />
+</template>
